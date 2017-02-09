@@ -1,5 +1,6 @@
 package cn.artden.collapsingtoolbardemo;
 
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.OnApplyWindowInsetsListener;
@@ -15,6 +16,7 @@ public class CollapsingViewPagerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StatusBarUtil.setStatusBarColor(getWindow(), Color.TRANSPARENT);
         setContentView(R.layout.activity_collapsing_view_pager);
 
 
