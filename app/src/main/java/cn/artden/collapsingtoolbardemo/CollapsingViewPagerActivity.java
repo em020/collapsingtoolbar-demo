@@ -2,9 +2,13 @@ package cn.artden.collapsingtoolbardemo;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.OnApplyWindowInsetsListener;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.WindowInsetsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
 public class CollapsingViewPagerActivity extends AppCompatActivity {
 
@@ -14,8 +18,30 @@ public class CollapsingViewPagerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_collapsing_view_pager);
 
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+
         viewPager.setOffscreenPageLimit(100);
+
+        ViewCompat.setOnApplyWindowInsetsListener(viewPager, new OnApplyWindowInsetsListener() {
+            @Override
+            public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
+                insets = ViewCompat.onApplyWindowInsets(v, insets);
+                if (insets.isConsumed()) {
+                    return insets;
+                }
+
+                boolean consumed = false;
+                for (int i = 0, count = viewPager.getChildCount(); i <  count; i++) {
+                    ViewCompat.dispatchApplyWindowInsets(viewPager.getChildAt(i), insets);
+                    if (insets.isConsumed()) {
+                        consumed = true;
+                    }
+                }
+                return consumed ? insets.consumeSystemWindowInsets() : insets;
+            }
+        });
+
+
         viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
