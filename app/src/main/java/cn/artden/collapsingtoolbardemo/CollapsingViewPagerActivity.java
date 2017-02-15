@@ -16,7 +16,11 @@ public class CollapsingViewPagerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StatusBarUtil.setStatusBarColor(getWindow(), Color.TRANSPARENT);
+
+        StatusBarFucker fucker = new StatusBarFucker();
+        fucker.setStatusBarColor(Color.TRANSPARENT);
+        fucker.fuck(getWindow());
+
         setContentView(R.layout.activity_collapsing_view_pager);
 
 
