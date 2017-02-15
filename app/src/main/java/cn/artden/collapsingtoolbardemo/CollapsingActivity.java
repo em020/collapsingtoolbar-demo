@@ -14,9 +14,6 @@ import android.view.WindowManager;
 public class CollapsingActivity extends AppCompatActivity {
 
     boolean tester;
-    View mDecor;
-
-    Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +24,6 @@ public class CollapsingActivity extends AppCompatActivity {
         fucker.fuck(getWindow());
 
         setContentView(R.layout.collapsing_layout);
-        mDecor = getWindow().getDecorView();
 
         View tv1 = findViewById(R.id.tv1);
         View tv2 = findViewById(R.id.tv2);
@@ -45,54 +41,24 @@ public class CollapsingActivity extends AppCompatActivity {
                 fucker.setWindowExtend(tester ? 2 : 1);
                 fucker.fuck(getWindow());
 
-
-
-//                handler.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        StatusBarUtil.setStatusBarLightOrDark(getWindow(), tester);
-//                    }
-//                });
-//
-//                handler.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        StatusBarUtil.setStatusBarColor(getWindow(), tester ? Color.RED : Color.TRANSPARENT);
-//                    }
-//                }, 5);
-
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        StatusBarUtil.setStatusBarLightOrDark(getWindow(), true);
-//                    }
-//                });
+                /**
+                 * 有ABC三个方法：
+                 * A=view.setSystemUiVisibility  B=window.setFlags  C=window.setExtraFlags(MIUI)
+                 * 他们之间连续调用时，会有未知原因的冲突，导致界面错乱
+                 * 这段测试代码是用于测试这个问题
+                 *
+                 * 对于原生系统，通过A来设置状态栏深色图标，A与B连续调用会有冲突
+                 * 对于MIUI，是通过C来设置状态栏深色图标，C与A连续调用会有冲突
+                 *
+                 * 大概是这二者内部都会导致向UI线程任务队列添加某个（共同的？）message。
+                 * 为避免这个问题，这里用post使这二个方法断开。还需要注意的是，经测试发现，
+                 * 把window.setFlags放在post中时 效果是完美的，如果把view.setSystemUiVisibility放在post中，
+                 * 则状态栏窗口会有偶现的、可见的状态变化（颜色 显隐）
+                 *
+                 */
 
             }
         });
 
-//        tv2.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                tester = !tester;
-//
-//                handler.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        StatusBarUtil.setStatusBarColor(getWindow(), tester ? Color.RED : Color.TRANSPARENT);
-//                    }
-//                });
-//                StatusBarUtil.setStatusBarLightOrDark(getWindow(), tester);
-//            }
-//        });
-//
-//        tv3.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                tester = !tester;
-//                StatusBarUtil.setStatusBarLightOrDark(getWindow(), tester);
-//                StatusBarUtil.setStatusBarColor(getWindow(), tester ? Color.RED : Color.TRANSPARENT);
-//            }
-//        });
     }
 }

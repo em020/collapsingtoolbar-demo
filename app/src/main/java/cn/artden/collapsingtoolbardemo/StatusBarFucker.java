@@ -123,7 +123,8 @@ public class StatusBarFucker {
                 //执行深浅icon切换
                 String manu = Build.MANUFACTURER;
                 if ("Xiaomi".equals(manu)) {
-                    setMIUIStatusBarDarkIcon(window, useDarkNotiIcon);
+                    /*setMIUIStatusBarDarkIcon(window, useDarkNotiIcon);// =window.setExtraFlag*/
+                    postSetMiuiDarkStatusBarIcon = true;
                 } else {
                     if (useDarkNotiIcon) {
                         systemUiVisibility |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
@@ -149,6 +150,16 @@ public class StatusBarFucker {
         }
 
 
+        if (postSetMiuiDarkStatusBarIcon) {
+            new Handler().post(new Runnable() {
+                @Override
+                public void run() {
+                    setMIUIStatusBarDarkIcon(window, useDarkNotiIcon);// =window.setExtraFlag
+                }
+            });
+        }
+
+
         if (statusBarColor != null || navBarColor != null) {
 
             new Handler().post(new Runnable() {
@@ -166,19 +177,25 @@ public class StatusBarFucker {
                     }
                 }
             });
-            /**
-             * 关于post的解释：
-             *
-             * view.setSystemUiVisibility 与 window.setFlags 这两个方法连续调用会有问题，具体原因不明，
-             * 大概是这二者内部都会导致向UI线程任务队列添加某个（共同的？）message。
-             * 为避免这个问题，这里用post使这二个方法断开。还需要注意的是，经测试发现，
-             * 把window.setFlags放在post中时 效果是完美的，如果把view.setSystemUiVisibility放在post中，
-             * 则状态栏窗口会有偶现的、可见的状态变化（颜色 显隐）
-             */
 
         }
+        /**
+         * 关于post的解释：
+         *
+         * A=view.setSystemUiVisibility  B=window.setFlags  C=window.setExtraFlags(MIUI)
+         * 对于原生系统，通过A来设置状态栏深色图标，A与B连续调用会有冲突
+         * 对于MIUI，是通过C来设置状态栏深色图标，C与A连续调用会有冲突
+         *
+         * 大概是这二者内部都会导致向UI线程任务队列添加某个（共同的？）message。
+         * 为避免这个问题，这里用post使这二个方法断开。还需要注意的是，经测试发现，
+         * 把window.setFlags放在post中时 效果是完美的，如果把view.setSystemUiVisibility放在post中，
+         * 则状态栏窗口会有偶现的、可见的状态变化（颜色 显隐）
+         *
+         */
+
 
     }
+    private boolean postSetMiuiDarkStatusBarIcon;
 
 
 
