@@ -120,4 +120,13 @@
         android:layout_margin="16dp"
         android:clickable="true"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@+id/toolbar"
+        app:layout_anchorGravity="center"
+        android:textSize="33dp"
+        android:textColor="#fff"
+        android:text="hello, world"/>
+
 </android.support.design.widget.CoordinatorLayout>
