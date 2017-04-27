@@ -5,15 +5,23 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.MessageQueue;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 public class CollapsingActivity extends AppCompatActivity {
 
     boolean tester;
+    CollapsingToolbarLayout collapsing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +36,16 @@ public class CollapsingActivity extends AppCompatActivity {
         View tv1 = findViewById(R.id.tv1);
         View tv2 = findViewById(R.id.tv2);
         View tv3 = findViewById(R.id.tv3);
+
+        collapsing = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        AppBarLayout appBar = (AppBarLayout) findViewById(R.id.appbar);
+        final TextView hello = (TextView) findViewById(R.id.hello);
+
+
+
+//        TextView tvTestTitle = (TextView) findViewById(R.id.tv_test_title);
+//        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) tvTestTitle.getLayoutParams();
+//        params.setBehavior(new TestBehavior());
 
         tv1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,6 +77,33 @@ public class CollapsingActivity extends AppCompatActivity {
 
             }
         });
+
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        toolbar.setTitleMargin(350,0,0,0);
+//
+//        collapsing.setTitle("HHHHHHHHHH");
+//
+//        collapsing.setCollapsedTitleTextAppearance(R.style.test_text_apperance_1);
+//        collapsing.setExpandedTitleTextAppearance(R.style.test_text_apperance_2);
+//
+//        collapsing.setExpandedTitleMargin(0,0,0,0);
+//        /*collapsing.setCollapsedTitleGravity(Gravity.CENTER | Gravity.BOTTOM);*/
+//        collapsing.setExpandedTitleGravity(Gravity.CENTER | Gravity.BOTTOM);
+
+
+
+        AppBarLayout.OnOffsetChangedListener mListener = new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if(collapsing.getHeight() + verticalOffset < 2 * ViewCompat.getMinimumHeight(collapsing)) {
+                    hello.animate().alpha(1).setDuration(600);
+                } else {
+                    hello.animate().alpha(0).setDuration(600);
+                }
+            }
+        };
+
+        appBar.addOnOffsetChangedListener(mListener);
 
     }
 }

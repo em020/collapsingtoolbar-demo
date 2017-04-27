@@ -54,7 +54,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:layout_collapseMode="pin" />
+                app:contentInsetStart="0dp"
+                app:contentInsetLeft="0dp"
+                app:contentInsetEnd="0dp"
+                app:contentInsetRight="0dp"
+                app:layout_collapseMode="pin">
+
+                <TextView
+                    android:id="@+id/hello"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:textColor="#fff"
+                    android:text="Hello!"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
@@ -119,14 +134,5 @@
         app:layout_anchorGravity="bottom|right|end"
         android:layout_margin="16dp"
         android:clickable="true"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_anchor="@+id/toolbar"
-        app:layout_anchorGravity="center"
-        android:textSize="33dp"
-        android:textColor="#fff"
-        android:text="hello, world"/>
 
 </android.support.design.widget.CoordinatorLayout>
