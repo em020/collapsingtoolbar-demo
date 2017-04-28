@@ -89,13 +89,15 @@ public class CollapsingActivity extends AppCompatActivity {
 
         hello.setAlpha(0f);
 
-        collapsing.setScrimVisibleHeightTrigger(300);
+        final int scrimHeightTrigger = (int) UiUtil.dp2px(this, 120);
+
+        collapsing.setScrimVisibleHeightTrigger(scrimHeightTrigger);
         collapsing.setScrimAnimationDuration(200);
 
         AppBarLayout.OnOffsetChangedListener mListener = new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if(collapsing.getHeight() + verticalOffset < 300) {
+                if(collapsing.getHeight() + verticalOffset < scrimHeightTrigger) {
                     /*hello.animate().alpha(1).setDuration(200);*/
                     hello.setAlpha(1f);
 
