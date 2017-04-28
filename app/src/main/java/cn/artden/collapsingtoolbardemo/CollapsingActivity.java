@@ -1,5 +1,6 @@
 package cn.artden.collapsingtoolbardemo;
 
+import android.animation.Animator;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
@@ -12,6 +13,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -41,11 +43,6 @@ public class CollapsingActivity extends AppCompatActivity {
         AppBarLayout appBar = (AppBarLayout) findViewById(R.id.appbar);
         final TextView hello = (TextView) findViewById(R.id.hello);
 
-
-
-//        TextView tvTestTitle = (TextView) findViewById(R.id.tv_test_title);
-//        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) tvTestTitle.getLayoutParams();
-//        params.setBehavior(new TestBehavior());
 
         tv1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,16 +87,27 @@ public class CollapsingActivity extends AppCompatActivity {
 //        /*collapsing.setCollapsedTitleGravity(Gravity.CENTER | Gravity.BOTTOM);*/
 //        collapsing.setExpandedTitleGravity(Gravity.CENTER | Gravity.BOTTOM);
 
+        hello.setAlpha(0f);
 
+        collapsing.setScrimVisibleHeightTrigger(300);
+        collapsing.setScrimAnimationDuration(200);
 
         AppBarLayout.OnOffsetChangedListener mListener = new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if(collapsing.getHeight() + verticalOffset < 2 * ViewCompat.getMinimumHeight(collapsing)) {
-                    hello.animate().alpha(1).setDuration(600);
+                if(collapsing.getHeight() + verticalOffset < 300) {
+                    /*hello.animate().alpha(1).setDuration(200);*/
+                    hello.setAlpha(1f);
+
+
+
                 } else {
-                    hello.animate().alpha(0).setDuration(600);
+                    /*hello.animate().alpha(0).setDuration(200);*/
+                    hello.setAlpha(0f);
                 }
+
+                Log.d("edmund", "verticalOffset: " + verticalOffset);
+
             }
         };
 
