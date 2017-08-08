@@ -21,6 +21,8 @@
         </activity>
         <activity android:name=".CollapsingViewPagerActivity">
         </activity>
+        <activity android:name=".RecyclerViewCollapsingActivity">
+        </activity>
     </application>
 
 </manifest>

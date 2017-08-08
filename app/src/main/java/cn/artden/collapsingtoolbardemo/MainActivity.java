@@ -39,4 +39,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void onClickRecyclerViewCollapsingActivity(View view ) {
+        startActivity(new Intent(this, RecyclerViewCollapsingActivity.class));
+    }
 }
